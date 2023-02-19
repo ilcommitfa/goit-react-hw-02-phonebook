@@ -1,48 +1,48 @@
 import { useState } from 'react';
-import Statistics from './Statistics';
-import FeedbackOptions from './FeedbackOptions';
-import Section from './Section';
-import Notification from './Notification';
-import {Container} from './App.styled';
+import { nanoid } from 'nanoid';
+import ContactForm from './ContactForm';
+import ContactList from './ContactList';
+import Filter from './Filter';
 
 function App() {
-  const [feedback, setFeedback] = useState({ good: 0, neutral: 0, bad: 0 });
+  const [contacts, setContacts] = useState([
+    {id: 'id-1', name: 'Rosie Simpson', number: '459-12-56'},
+    {id: 'id-2', name: 'Hermione Kline', number: '443-89-12'},
+    {id: 'id-3', name: 'Eden Clements', number: '645-17-79'},
+    {id: 'id-4', name: 'Annie Copeland', number: '227-91-26'},
+  ]);
+  const [filter, setFilter] = useState('');
 
-  const handleFeedback = option => {
-    setFeedback(prevState => ({ ...prevState, [option]: prevState[option] + 1 }));
+  const addContact = (name, number) => {
+    const contact = { id: nanoid(), name, number };
+    if (contacts.find((item) => item.name.toLowerCase() === name.toLowerCase())) {
+      alert(`${name} is already in contacts`);
+      return;
+    }
+    setContacts([contact, ...contacts]);
   };
 
-  const countTotalFeedback = () => {
-    return Object.values(feedback).reduce((total, value) => total + value, 0);
+  const deleteContact = (id) => {
+    setContacts(contacts.filter((item) => item.id !== id));
   };
 
-  const countPositiveFeedbackPercentage = () => {
-    const total = countTotalFeedback();
-    const positive = feedback.good;
-    return total > 0 ? Math.round((positive / total) * 100) : 0;
+  const changeFilter = (e) => {
+    setFilter(e.target.value);
   };
 
-  const options = Object.keys(feedback);
+  const filteredContacts = contacts.filter((item) =>
+    item.name.toLowerCase().includes(filter.toLowerCase())
+  );
 
   return (
-    <Container>
-      <Section title="Please leave your feedback">
-        <FeedbackOptions options={options} onLeaveFeedback={handleFeedback} />
-      </Section>
-      <Section title="Statistics">
-        {countTotalFeedback() > 0 ? (
-          <Statistics
-            good={feedback.good}
-            neutral={feedback.neutral}
-            bad={feedback.bad}
-            total={countTotalFeedback()}
-            positivePercentage={countPositiveFeedbackPercentage()}
-          />
-        ) : (
-          <Notification message="There is no feedback" />
-        )}
-      </Section>
-    </Container>
+    <div>
+      <h1>Phonebook</h1>
+      <ContactForm onAddContact={addContact} />
+
+      <h2>Contacts</h2>
+      <Filter value={filter} onChange={changeFilter} />
+      <ContactList contacts={filteredContacts} onDeleteContact={deleteContact} />
+    </div>
   );
 }
 
