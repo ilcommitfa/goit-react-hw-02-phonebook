@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Form, InputThumb, Input, ButtonThumb } from './ContactForm.styled'; 
 
 function ContactForm({ onAddContact }) {
   const [name, setName] = useState('');
@@ -12,10 +13,10 @@ function ContactForm({ onAddContact }) {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div>
+    <Form onSubmit={handleSubmit}>
+      <InputThumb>
         <label htmlFor="name">Name</label>
-        <input
+        <Input
           type="text"
           name="name"
           pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
@@ -24,10 +25,10 @@ function ContactForm({ onAddContact }) {
           value={name}
           onChange={(e) => setName(e.target.value)}
         />
-      </div>
-      <div>
+      </InputThumb>
+      <InputThumb>
         <label htmlFor="number">Number</label>
-        <input
+        <Input
           type="tel"
           name="number"
           pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
@@ -36,11 +37,11 @@ function ContactForm({ onAddContact }) {
           value={number}
           onChange={(e) => setNumber(e.target.value)}
         />
-      </div>
-      <div>
+      </InputThumb>
+      <ButtonThumb>
         <button type="submit">Add contact</button>
-      </div>
-    </form>
+      </ButtonThumb>
+    </Form>
   );
 }
 

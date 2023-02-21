@@ -3,6 +3,7 @@ import { nanoid } from 'nanoid';
 import ContactForm from './ContactForm';
 import ContactList from './ContactList';
 import Filter from './Filter';
+import {Container} from './App.styled';
 
 function App() {
   const [contacts, setContacts] = useState([
@@ -35,14 +36,14 @@ function App() {
   );
 
   return (
-    <div>
+    <Container>
       <h1>Phonebook</h1>
       <ContactForm onAddContact={addContact} />
 
       <h2>Contacts</h2>
       <Filter value={filter} onChange={changeFilter} />
       <ContactList contacts={filteredContacts} onDeleteContact={deleteContact} />
-    </div>
+    </Container>
   );
 }
 
